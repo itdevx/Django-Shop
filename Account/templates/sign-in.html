@@ -1,0 +1,41 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	
+	<!-- breadcrumb-section -->
+	<div class="breadcrumb-section breadcrumb-bg">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 text-center">
+					<div class="breadcrumb-text">
+						<p>Please sign in</p>
+						<h1>Sign-In</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end breadcrumb section -->
+
+	<!-- cart -->
+	<div class="cart-section mt-150 mb-150">
+		<div class="container">
+			<div class="row d-flex justify-content-center">
+                <div class="col-lg-12">
+                    <form method="post">
+						{% csrf_token %}
+                        <input type="text" name="username" class="text-center form-control" placeholder="username">
+                        <input type="password" name="password" class="text-center mt-5 form-control" placeholder="password">
+                        <button type="submit" class="btn col-6 p-2 mt-5 btn-warning">Sign-In</button>                        
+                    </form>
+                </div>
+			</div>
+		</div>
+	</div>
+	<!-- end cart -->
+
+
+
+{% endblock %}
