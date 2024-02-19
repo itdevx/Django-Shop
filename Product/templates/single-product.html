@@ -35,7 +35,8 @@
 							<form action="index.html">
 								<input type="number" placeholder="0">
 							</form>
-							<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+							<!-- <a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a> -->
+							<button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 							<p><strong>Categories: </strong>{{ product.category }}</p>
 						</div>
 						<h4>Share:</h4>
@@ -84,5 +85,39 @@
 	<!-- end more products -->
 
 
+	<script>
+		$(document).on('click', '#add-cart', function(e){
+			e.preventDefault()
+			$.ajax({
+				type: 'POST',
+				url: '{% url "cart:cart_add" %}',
+				data: {
+					product_id: $('#add-cart').val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post'
+				},
+				success: function(json) {
+					document.getElementById('cart_quantity').textContent = json.qty
+					Toastify({
+					text: "{{ product.title }} add to your Cart",
+					duration: 3000,
+					destination: "https://github.com/apvarun/toastify-js",
+					newWindow: true,
+					close: true,
+					gravity: "top", // `top` or `bottom`
+					position: "left", // `left`, `center` or `right`
+					stopOnFocus: true, // Prevents dismissing of toast on hover
+					style: {
+						background: "linear-gradient(to right, green, yellow)",
+						color:'white'
+					},
+					onClick: function(){} // Callback after click
+					}).showToast();
+				},
+				error: function(xhr, errmsg, err){
+				}
+			})
+		}) 
+	</script>
 
 {% endblock %}

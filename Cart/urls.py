@@ -10,4 +10,7 @@ urlpatterns = [
     path(
         'checkout', CheckoutView.as_view(), name='checkout'
     ),
+    path(
+        'cart_add', cart_add, name='cart_add'
+    )
 ]

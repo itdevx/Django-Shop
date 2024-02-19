@@ -33,6 +33,10 @@
 	<link rel="stylesheet" href="{% static 'assets/css/responsive.css' %}">
 	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
 
 </head>
 <body>
@@ -99,7 +103,7 @@
                                     </li>
                                     <li class="{% if request.resolver_match.url_name == 'cart' %}current-list-item{% endif %}">
                                         <div class="header-icons">
-                                            <a class="shopping-cart" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"></i></a>
+                                            <a class="shopping-cart" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"><span class="badge badge-warning rouned-pill" id="cart_quantity">{{ cart|length }}</span></i></a>
                                             <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                         </div>
                                     </li>
@@ -111,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>	
         </div>
         <!-- end header -->
 
@@ -260,5 +264,6 @@
 	<script src="{% static 'assets/js/sticker.js' %}"></script>
 	<!-- main js -->
 	<script src="{% static 'assets/js/main.js' %}"></script>
+
 </body>
 </html>
