@@ -88,7 +88,7 @@
 						</div>
 						<h3>{{ p.title }}</h3>
 						<p class="product-price"><span>Per Kg</span> {{ p.price }}$ </p>
-						<a href="cart.html" class="cart-btn"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+						<button class="cart-btn btn bg-warning text-white" type="button" value="{{ p.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 					</div>
 				</div>
 				{% endfor %}
@@ -282,6 +282,40 @@
 	</div>
 	<!-- end latest news -->
 
+	<script>
+		$(document).on('click', '#add-cart', function(e){
+			e.preventDefault()
+			$.ajax({
+				type: 'POST',
+				url: '{% url "cart:cart_add" %}',
+				data: {
+					product_id: $('#add-cart').val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post'
+				},
+				success: function(json) {
+					document.getElementById('cart_quantity').textContent = json.qty
+					Toastify({
+					text: "Product add to your Cart",
+					duration: 3000,
+					destination: "https://github.com/apvarun/toastify-js",
+					newWindow: true,
+					close: true,
+					gravity: "top", // `top` or `bottom`
+					position: "left", // `left`, `center` or `right`
+					stopOnFocus: true, // Prevents dismissing of toast on hover
+					style: {
+						background: "linear-gradient(to right, green, yellow)",
+						color:'white'
+					},
+					onClick: function(){} // Callback after click
+					}).showToast();
+				},
+				error: function(xhr, errmsg, err){
+				}
+			})
+		}) 
+	</script>
 
 
 	
