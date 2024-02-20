@@ -10,7 +10,12 @@ class CartView(View):
     template_name = 'cart.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        cart = Cart(request)
+        cart_products = cart.get_products()
+        context = {
+            'cart_products': cart_products
+        }
+        return render(request, self.template_name, context)
     
 
 def cart_add(request):
