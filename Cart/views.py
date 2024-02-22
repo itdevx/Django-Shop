@@ -5,7 +5,6 @@ from Product.models import Product
 from django.http import JsonResponse
 
 
-
 class CartView(View):
     template_name = 'cart.html'
 
@@ -27,7 +26,6 @@ def cart_add(request):
         cart.add(product=product, request=request)
         cart_quantity = cart.__len__()
         res = JsonResponse({'qty': cart_quantity})
-
         return res
     
 

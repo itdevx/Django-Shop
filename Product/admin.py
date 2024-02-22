@@ -28,5 +28,4 @@ class CustomerAdmin(admin.ModelAdmin):
     list_filter = ['phone', 'email']
     list_editable = ['phone', 'email']
 
-
 admin.site.register(Order)

@@ -28,8 +28,7 @@ class SignInView(View):
             return redirect('product:index')
         else:
             messages.error(request, 'username or password has not found!')
-            
-        
+                    
         return render(request, self.template_name)
 
 

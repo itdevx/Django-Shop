@@ -40,14 +40,22 @@ class Product(models.Model):
     
 
 class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    totoal_price = models.FloatField(blank=True, null=True)
+    date_order = models.DateTimeField(auto_now_add=True)
+    # کد رهگیری
+    tracking_code = models.CharField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-    address = models.CharField(max_length=400, blank=False)
-    phone = models.CharField(max_length=20, blank=True)
-    date = models.DateField(default=timezone.now)
-    status = models.BooleanField(default=True)
+    order_at = models.DateTimeField(auto_now_add=True)
+    quantity = models.IntegerField(default=0, null=True, blank=True) 
 
     def __str__(self):
         return self.product.title
-
+        

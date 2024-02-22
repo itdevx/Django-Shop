@@ -39,7 +39,10 @@
 							<tbody>
 								{% for cp in cart_products %}
 								<tr class="table-body-row">
-									<td class="product-remove"><a href="#"><i class="bg-danger far fa-window-close"></i></a></td>
+									<form action="" method="post">
+										{% csrf_token %}
+										<td class="product -remove"><a href="#"><i class="bg-danger far fa-window-close"></i></a></td>
+									</form>
 									<td class="product-image"><img src="{{ cp.picture.url }}" alt=""></td>
 									<td class="product-name">{{ cp.title }}</td>
 									<td class="product-price">${{ cp.price }}</td>
