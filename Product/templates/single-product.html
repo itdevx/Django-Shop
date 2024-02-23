@@ -32,7 +32,12 @@
 						<p class="single-product-pricing"><span>Per Kg</span> ${{ product.price }}</p>
 						<p>{{ product.description }}</p>
 						<div class="single-product-form">
-							<button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+							<!-- <form action="" method="post"> -->
+								{% csrf_token %}
+								<input type="hidden" value="{{ product.id }}" class="product_id_hid">
+								<!-- <button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button> -->
+								<button class="cart-btn btn bg-warning text-white" id="add-to-cart" type="button"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+							<!-- </form> -->
 							<p><strong>Categories: </strong>{{ product.category }}</p>
 						</div>
 						<h4>Share:</h4>
@@ -81,7 +86,7 @@
 	<!-- end more products -->
 
 
-	<script>
+	<!-- <script>
 		$(document).on('click', '#add-cart', function(e){
 			e.preventDefault()
 			$.ajax({
@@ -114,6 +119,68 @@
 				}
 			})
 		}) 
-	</script>
+	</script> -->
+
+
+
+
+	<script>
+		$('#add-to-cart').click(function(e) {
+			e.preventDefault();
+
+			let product_id = $(this).closest('.single-product-content').find('.product_id_hid').val();
+			let csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+			$.ajax({
+				method: 'POST',
+				url: '{% url "cart:add-to-cart" %}',
+				data: {
+					'product_id':product_id,
+					csrfmiddlewaretoken: csrf_token,
+					action: 'post'
+				},
+				dataType: 'dataType',
+				success: function(data, response) {
+					console.log(response)
+				},
+
+				// Toastify({
+				// text: "{{ product.title }} add to  Cart",
+				// duration: 3000,
+				// destination: "https://github.com/apvarun/toastify-js",
+				// newWindow: true,
+				// close: true,
+				// gravity: "top", // `top` or `bottom`
+				// position: "left", // `left`, `center` or `right`
+				// stopOnFocus: true, // Prevents dismissing of toast on hover
+				// style: {
+				// 	background: "linear-gradient(to right, green, yellow)",
+				// 	color:'white'
+				// },
+				// onClick: function(){} // Callback after click
+				// }).showToast();
+				
+				error: function(jqxhr, err){
+				Toastify({
+				text: "Product is Already in Cart",
+				duration: 3000,
+				destination: "https://github.com/apvarun/toastify-js",
+				newWindow: true,
+				close: true,
+				gravity: "top", // `top` or `bottom`
+				position: "left", // `left`, `center` or `right`
+				stopOnFocus: true, // Prevents dismissing of toast on hover
+				style: {
+					background: "linear-gradient(to right, red, yellow)",
+					color:'white'
+				},
+				onClick: function(){} // Callback after click
+				}).showToast();
+				},
+			})
+
+		})
+
+	</script> 
+
 
 {% endblock %}
