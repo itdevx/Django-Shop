@@ -11,47 +11,48 @@ from Cart.models import Cart as C
 class IndexView(View):
     template_name = 'index.html'
 
-    def get(self, requset):
+    def get(self, request):
         product = Product.objects.filter(status=True)[:3]
         context = {
             'product':product,
-            'qty': C.objects.count()
+            
+            'qty': C.objects.filter(user=request.user).count()
 
         }
-        return render(requset, self.template_name, context)
+        return render(request, self.template_name, context)
     
 
 class AboutView(View):
     template_name = 'about.html'
 
-    def get(self, requset):
-        return render(requset, self.template_name)
+    def get(self, request):
+        return render(request, self.template_name)
     
 
 class ContactView(View):
     template_name = 'contact.html'
 
-    def get(self, requset):
-        return render(requset, self.template_name)
+    def get(self, request):
+        return render(request, self.template_name)
     
 
 class ShopView(View):
     template_name = 'shop.html'
 
-    def get(self, requset):
+    def get(self, request):
         products = Product.objects.filter(status=True)
         category = Category.objects.all()
         paginator = Paginator(products, 12)
-        page_number = requset.GET.get('page')
+        page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
         context = {
             'products': page_obj,
             'category': category,
-            'qty': C.objects.count()
+            'qty': C.objects.filter(user=request.user).count()
 
         }
-        return render(requset, self.template_name, context)
+        return render(request, self.template_name, context)
     
 
 class SinglProductView(DetailView):
@@ -64,7 +65,7 @@ class SinglProductView(DetailView):
         context = super().get_context_data(**kwargs)
         product = get_object_or_404(Product, status=True, slug=self.kwargs['slug'])
         context['realted_product'] = Product.objects.filter(category__product=product, status=True).exclude(slug=self.kwargs['slug'])[:3]
-        context['qty'] = C.objects.count()
+        context['qty'] = C.objects.filter(user=request.user).count()
 
         return context
     
@@ -83,6 +84,6 @@ class SearchView(ListView):
         
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['qty'] = C.objects.count()
+        context['qty'] = C.objects.filter(user=request.user).count()
         return context
         

@@ -7,13 +7,17 @@ from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from Account.forms import UserSignUpForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class SignInView(View):
     template_name = 'sign-in.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        if not request.user.is_authenticated:
+            return render(request, self.template_name)
+        else:
+            return redirect('product:index')
 
     def post(self, request):
         username=request.POST['username']

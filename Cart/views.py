@@ -4,16 +4,18 @@ from Cart.cart import Cart
 from Product.models import Product
 from django.http import JsonResponse
 from Cart.models import Cart as C
+from django.http import Http404
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CartView(View):
+class CartView(LoginRequiredMixin, View):
     template_name = 'cart.html'
+    login_url = 'account:sign-in'
 
     def get(self, request):
         # cart = Cart(request)
         # cart_products = cart.get_products()
-
-        cart_items = C.objects.filter(user=request.user)
+        cart_items = C.objects.filter(user=request.user).count()
 
         total_price = 0
         if cart_items:
@@ -24,7 +26,7 @@ class CartView(View):
             # 'cart_products': cart_products,
             'qty': C.objects.count(),
             'cart_items': cart_items,
-            'cart_total': cart_items.count(),
+            'cart_total': C.objects.filter(user=request.user).count(),
             'total_price': total_price
         }
         return render(request, self.template_name, context)
@@ -45,22 +47,24 @@ def cart_add(request):
 
 
 def add_to_cart(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            p_id = int(request.POST.get('product_id'))
-            product_check = Product.objects.get(id=p_id)
-            if product_check:
-                if C.objects.filter(user=request.user, product_id=p_id):
-                    return JsonResponse({'status': 'Product is Already in Cart'})
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            if request.user.is_authenticated:
+                p_id = int(request.POST.get('product_id'))
+                product_check = Product.objects.get(id=p_id)
+                if product_check:
+                    if C.objects.filter(user=request.user, product_id=p_id):
+                        return JsonResponse({'status': 'Product is Already in Cart'})
+                    else:
+                        product_qyt = 1
+                        C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
+                        return JsonResponse({'status': 'Product added successfuly', 'qty': C.objects.filter(user=request.user).count()})
                 else:
-                    product_qyt = 1
-                    C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
-                    return JsonResponse({'status': 'Product added successfuly', 'qty': C.objects.count()})
-            else:
-                return JsonResponse({'status': 'No such Product found'})
+                    return JsonResponse({'status': 'No such Product found'})
 
-        else:
-            return JsonResponse({'status': 'Login to continue'})
+            else:
+                return JsonResponse({'status': 'Login to continue'})
+        
 
 
 
