@@ -125,60 +125,56 @@
 
 
 	<script>
-		$('#add-to-cart').click(function(e) {
-			e.preventDefault();
-
-			let product_id = $(this).closest('.single-product-content').find('.product_id_hid').val();
-			let csrf_token = $('input[name=csrfmiddlewaretoken]').val();
+		$(document).on('click', '#add-to-cart', function(e){
+			e.preventDefault()
 			$.ajax({
-				method: 'POST',
+				type: 'POST',
 				url: '{% url "cart:add-to-cart" %}',
 				data: {
-					'product_id':product_id,
-					csrfmiddlewaretoken: csrf_token,
+					product_id: $('.product_id_hid').val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
 					action: 'post'
 				},
-				dataType: 'dataType',
-				success: function(data, response) {
-					console.log(response)
+				success: function(json) {
+					if (json.status === 'Product is Already in Cart'){
+						Toastify({
+						text: json.status,
+						duration: 3000,
+						destination: "https://github.com/apvarun/toastify-js",
+						newWindow: true,
+						close: true,
+						gravity: "top", // `top` or `bottom`
+						position: "left", // `left`, `center` or `right`
+						stopOnFocus: true, // Prevents dismissing of toast on hover
+						style: {
+							background: "linear-gradient(to right, red, yellow)",
+							color:'white'
+						},
+						onClick: function(){} // Callback after click
+						}).showToast();
+					}else if( json.status === 'Product added successfuly'){
+						Toastify({
+						text: json.status,
+						duration: 3000,
+						destination: "https://github.com/apvarun/toastify-js",
+						newWindow: true,
+						close: true,
+						gravity: "top", // `top` or `bottom`
+						position: "left", // `left`, `center` or `right`
+						stopOnFocus: true, // Prevents dismissing of toast on hover
+						style: {
+							background: "linear-gradient(to right, green, yellow)",
+							color:'white'
+						},
+						onClick: function(){} // Callback after click
+						}).showToast();
+					}
+					
 				},
-
-				// Toastify({
-				// text: "{{ product.title }} add to  Cart",
-				// duration: 3000,
-				// destination: "https://github.com/apvarun/toastify-js",
-				// newWindow: true,
-				// close: true,
-				// gravity: "top", // `top` or `bottom`
-				// position: "left", // `left`, `center` or `right`
-				// stopOnFocus: true, // Prevents dismissing of toast on hover
-				// style: {
-				// 	background: "linear-gradient(to right, green, yellow)",
-				// 	color:'white'
-				// },
-				// onClick: function(){} // Callback after click
-				// }).showToast();
+				error: function(jqxhr, textStatus, errorThrown) {}
 				
-				error: function(jqxhr, err){
-				Toastify({
-				text: "Product is Already in Cart",
-				duration: 3000,
-				destination: "https://github.com/apvarun/toastify-js",
-				newWindow: true,
-				close: true,
-				gravity: "top", // `top` or `bottom`
-				position: "left", // `left`, `center` or `right`
-				stopOnFocus: true, // Prevents dismissing of toast on hover
-				style: {
-					background: "linear-gradient(to right, red, yellow)",
-					color:'white'
-				},
-				onClick: function(){} // Callback after click
-				}).showToast();
-				},
 			})
-
-		})
+		}) 
 
 	</script> 
 

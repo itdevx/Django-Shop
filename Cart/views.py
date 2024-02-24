@@ -37,12 +37,12 @@ def add_to_cart(request):
             p_id = int(request.POST.get('product_id'))
             product_check = Product.objects.get(id=p_id)
             if product_check:
-                if not C.objects.filter(user=request.user, product_id=p_id):
+                if C.objects.filter(user=request.user, product_id=p_id):
+                    return JsonResponse({'status': 'Product is Already in Cart'})
+                else:
                     product_qyt = 1
                     C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
                     return JsonResponse({'status': 'Product added successfuly'})
-                else:
-                    return JsonResponse({'status': 'Product is Already in Cart'})
             else:
                 return JsonResponse({'status': 'No such Product found'})
 
