@@ -10,15 +10,27 @@ class CartView(View):
     template_name = 'cart.html'
 
     def get(self, request):
-        cart = Cart(request)
-        cart_products = cart.get_products()
+        # cart = Cart(request)
+        # cart_products = cart.get_products()
+
+        cart_items = C.objects.filter(user=request.user)
+
+        total_price = 0
+        if cart_items:
+            for item in cart_items:
+                total_price += item.product.price
+
         context = {
-            'cart_products': cart_products,
-            'qty': C.objects.count()
+            # 'cart_products': cart_products,
+            'qty': C.objects.count(),
+            'cart_items': cart_items,
+            'cart_total': cart_items.count(),
+            'total_price': total_price
         }
         return render(request, self.template_name, context)
     
 
+# session
 def cart_add(request):
     cart = Cart(request)
     

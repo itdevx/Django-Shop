@@ -34,8 +34,8 @@
 						<div class="single-product-form">
 							<!-- <form action="" method="post"> -->
 								{% csrf_token %}
-								<input type="hidden" value="{{ product.id }}" class="product_id_hid">
 								<!-- <button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button> -->
+								<input type="hidden" value="{{ product.id }}" class="product_id_hid">
 								<button class="cart-btn btn bg-warning text-white" id="add-to-cart" type="button"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
 							<!-- </form> -->
 							<p><strong>Categories: </strong>{{ product.category }}</p>

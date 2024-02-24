@@ -37,17 +37,17 @@
 								</tr>
 							</thead>
 							<tbody>
-								{% for cp in cart_products %}
+								{% for cp in cart_items %}
 								<tr class="table-body-row">
 									<form action="" method="post">
 										{% csrf_token %}
 										<td class="product -remove"><a href="#"><i class="bg-danger far fa-window-close"></i></a></td>
 									</form>
-									<td class="product-image"><img src="{{ cp.picture.url }}" alt=""></td>
-									<td class="product-name">{{ cp.title }}</td>
-									<td class="product-price">${{ cp.price }}</td>
+									<td class="product-image"><img src="{{ cp.product.picture.url }}" alt=""></td>
+									<td class="product-name">{{ cp.product.title }}</td>
+									<td class="product-price">${{ cp.product.price }}</td>
 									<!-- <td class="product-quantity"><input type="number" placeholder="0"></td> -->
-									<td class="product-total">{{ cart|length }}</td>
+									<td class="product-total">count</td>
 								</tr>
 								{% endfor %}
 							</tbody>
@@ -66,16 +66,8 @@
 							</thead>
 							<tbody>
 								<tr class="total-data">
-									<td><strong>Subtotal: </strong></td>
-									<td>$500</td>
-								</tr>
-								<tr class="total-data">
-									<td><strong>Shipping: </strong></td>
-									<td>$45</td>
-								</tr>
-								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>$545</td>
+									<td>${{ total_price }}</td>
 								</tr>
 							</tbody>
 						</table>
