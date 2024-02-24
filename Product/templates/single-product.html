@@ -85,7 +85,7 @@
 	{% endif %}
 	<!-- end more products -->
 
-
+	<!-- session -->
 	<!-- <script>
 		$(document).on('click', '#add-cart', function(e){
 			e.preventDefault()
@@ -153,6 +153,7 @@
 						onClick: function(){} // Callback after click
 						}).showToast();
 					}else if( json.status === 'Product added successfuly'){
+						document.getElementById('cart_quantity').textContent = json.qty
 						Toastify({
 						text: json.status,
 						duration: 3000,

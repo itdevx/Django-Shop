@@ -5,6 +5,7 @@ from django.views.generic import View, DetailView, ListView
 from Product.models import Product, Category
 from django.core.paginator import Paginator
 from django.db.models import Q
+from Cart.models import Cart as C
 
 
 class IndexView(View):
@@ -13,7 +14,9 @@ class IndexView(View):
     def get(self, requset):
         product = Product.objects.filter(status=True)[:3]
         context = {
-            'product':product
+            'product':product,
+            'qty': C.objects.count()
+
         }
         return render(requset, self.template_name, context)
     
@@ -44,7 +47,9 @@ class ShopView(View):
 
         context = {
             'products': page_obj,
-            'category': category
+            'category': category,
+            'qty': C.objects.count()
+
         }
         return render(requset, self.template_name, context)
     
@@ -59,6 +64,8 @@ class SinglProductView(DetailView):
         context = super().get_context_data(**kwargs)
         product = get_object_or_404(Product, status=True, slug=self.kwargs['slug'])
         context['realted_product'] = Product.objects.filter(category__product=product, status=True).exclude(slug=self.kwargs['slug'])[:3]
+        context['qty'] = C.objects.count()
+
         return context
     
 

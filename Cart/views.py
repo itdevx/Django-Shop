@@ -13,7 +13,8 @@ class CartView(View):
         cart = Cart(request)
         cart_products = cart.get_products()
         context = {
-            'cart_products': cart_products
+            'cart_products': cart_products,
+            'qty': C.objects.count()
         }
         return render(request, self.template_name, context)
     
@@ -42,7 +43,7 @@ def add_to_cart(request):
                 else:
                     product_qyt = 1
                     C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
-                    return JsonResponse({'status': 'Product added successfuly'})
+                    return JsonResponse({'status': 'Product added successfuly', 'qty': C.objects.count()})
             else:
                 return JsonResponse({'status': 'No such Product found'})
 

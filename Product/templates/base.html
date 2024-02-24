@@ -103,7 +103,7 @@
                                     </li>
                                     <li class="{% if request.resolver_match.url_name == 'cart' %}current-list-item{% endif %}">
                                         <div class="header-icons">
-                                            <a class="shopping-cart" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"><span class="badge badge-warning rouned-pill" id="cart_quantity">{{ cart|length }}</span></i></a>
+                                            <a class="shopping-cart" href="{% url 'cart:cart' %}"><i class="fas fa-shopping-cart"><span class="badge badge-warning rouned-pill" id="cart_quantity">{{ qty }}</span></i></a>
                                             <a class="mobile-hide search-bar-icon" href="#"><i class="fas fa-search"></i></a>
                                         </div>
                                     </li>
