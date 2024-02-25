@@ -65,6 +65,15 @@ def add_to_cart(request):
                 return JsonResponse({'status': 'Login to continue'})
 
 
+def remove_product(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            p_id = request.POST.get('product_id')
+            product = Product.objects.get(pk=p_id)
+            cart = C.objects.filter(user=request.user)
+            print(p_id)
+            return JsonResponse({'status': 'Product Deleted from your Cart!'})                
+
 
 class CheckoutView(View):
     template_name = 'checkout.html'

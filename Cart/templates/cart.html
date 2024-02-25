@@ -39,14 +39,15 @@
 							<tbody>
 								{% for cp in cart_items %}
 								<tr class="table-body-row">
-									<td class="product -remove"><a href="#"><i class="bg-danger far fa-window-close"></i></a></td>
+									{% csrf_token %}
+									<input type="hidden" class="prod_id" value="{{ cp.product.id }}">
+									<td class="product-remove"><button class="btn" id="remove-product"><i class="btn far fa-window-close"></i></button></td>
 									<td class="product-image"><img src="{{ cp.product.picture.url }}" alt=""></td>
 									<td class="product-name">{{ cp.product.title }}</td>
 									<td class="product-price">${{ cp.product.price }}</td>
 									<!-- <td class="product-quantity"><input type="number" placeholder="0"></td> -->
-									<input type="hidden" class="prod_id" value="{{ cp.product.id }}">
-									{% csrf_token %}
-									<td class="product-total"><input type="number" min="1" id="quantity" class="form-control" value="{{ cp.quantity }}"></td>
+									<!-- <td class="product-total"><input type="number" min="1" id="quantity" class="form-control" value="{{ cp.quantity }}"></td> -->
+									<td class="product-total">{{ cp.quantity }}</td>
 								</tr>
 								{% endfor %}
 							</tbody>
@@ -92,6 +93,26 @@
 	</div>
 	<!-- end cart -->
 
+
+	<script>
+		
+		$(document).on('click', '#remove-product', function(e) {
+			e.preventDefault()
+			$.ajax({
+				type: 'POST',
+				url: '{% url "cart:remove_product" %}',
+				data: {
+					product_id: $('.prod_id').val(),
+					csrfmiddlewaretoken: '{{ csrf_token }}',
+					action: 'post'
+				},
+				success: function(json){
+					console.log(json)
+				}
+			})
+		})
+
+	</script>
 
 
 {% endblock %}
