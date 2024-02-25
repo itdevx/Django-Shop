@@ -15,10 +15,10 @@ class IndexView(View):
         product = Product.objects.filter(status=True)[:3]
         context = {
             'product':product,
-            
-            'qty': C.objects.filter(user=request.user).count()
-
         }
+        if request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=request.user).count()
+
         return render(request, self.template_name, context)
     
 
@@ -26,14 +26,21 @@ class AboutView(View):
     template_name = 'about.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = {}
+        if request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=request.user).count()
+        return render(request, self.template_name, context)
     
 
 class ContactView(View):
     template_name = 'contact.html'
 
+
     def get(self, request):
-        return render(request, self.template_name)
+        context = {}
+        if request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=request.user).count()
+        return render(request, self.template_name, context)
     
 
 class ShopView(View):
@@ -49,9 +56,9 @@ class ShopView(View):
         context = {
             'products': page_obj,
             'category': category,
-            'qty': C.objects.filter(user=request.user).count()
-
         }
+        if request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=request.user).count()
         return render(request, self.template_name, context)
     
 
@@ -65,8 +72,8 @@ class SinglProductView(DetailView):
         context = super().get_context_data(**kwargs)
         product = get_object_or_404(Product, status=True, slug=self.kwargs['slug'])
         context['realted_product'] = Product.objects.filter(category__product=product, status=True).exclude(slug=self.kwargs['slug'])[:3]
-        context['qty'] = C.objects.filter(user=request.user).count()
-
+        if self.request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=self.request.user).count()
         return context
     
 
@@ -84,6 +91,7 @@ class SearchView(ListView):
         
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
-        context['qty'] = C.objects.filter(user=request.user).count()
+        if self.request.user.is_authenticated:
+            context['qty'] = C.objects.filter(user=self.request.user).count()
         return context
         

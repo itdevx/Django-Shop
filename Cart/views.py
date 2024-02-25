@@ -15,8 +15,7 @@ class CartView(LoginRequiredMixin, View):
     def get(self, request):
         # cart = Cart(request)
         # cart_products = cart.get_products()
-        cart_items = C.objects.filter(user=request.user).count()
-
+        cart_items = C.objects.filter(user=request.user).all()
         total_price = 0
         if cart_items:
             for item in cart_items:
@@ -24,11 +23,11 @@ class CartView(LoginRequiredMixin, View):
 
         context = {
             # 'cart_products': cart_products,
-            'qty': C.objects.count(),
+            'qty': C.objects.filter(user=request.user).count(),
             'cart_items': cart_items,
-            'cart_total': C.objects.filter(user=request.user).count(),
-            'total_price': total_price
+            'total_price': total_price,
         }
+
         return render(request, self.template_name, context)
     
 
@@ -64,7 +63,6 @@ def add_to_cart(request):
 
             else:
                 return JsonResponse({'status': 'Login to continue'})
-        
 
 
 

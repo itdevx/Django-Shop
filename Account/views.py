@@ -7,7 +7,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from Account.forms import UserSignUpForm
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 
 class SignInView(View):
@@ -41,6 +41,12 @@ class SignUpView(CreateView):
     # success_url = reverse_lazy('product:index')
     form_class = UserSignUpForm
     success_message = 'Sign-up Successfuly!'
+
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return render(request, self.template_name, {'form': self.form_class})
+        else:
+            return redirect('product:index')
     
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
         form.save()
