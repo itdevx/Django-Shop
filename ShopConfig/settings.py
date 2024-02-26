@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Product',
     'Account',
-    'Cart'
+    'Cart',
+    'azbankgateways'
 ]
 
 MIDDLEWARE = [
