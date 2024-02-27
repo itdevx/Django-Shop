@@ -88,7 +88,8 @@
 						</div>
 						<h3>{{ p.title }}</h3>
 						<p class="product-price"><span>Per Kg</span> {{ p.price }}$ </p>
-						<button class="cart-btn btn bg-warning text-white" type="button" value="{{ p.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<a href="{{ p.get_absolute_url }}" class="btn bg-warning text-white">view detail <i class="fas fa-show"></i></a>
+						<!-- <button class="cart-btn btn bg-warning text-white" type="button" value="{{ p.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button> -->
 					</div>
 				</div>
 				{% endfor %}

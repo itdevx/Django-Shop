@@ -35,8 +35,10 @@
 							<!-- <form action="" method="post"> -->
 								{% csrf_token %}
 								<!-- <button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button> -->
+								{% if request.user.is_authenticated %}
 								<input type="hidden" value="{{ product.id }}" class="product_id_hid">	
 								<button class="cart-btn btn bg-warning text-white" id="add-to-cart" type="button"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+								{% endif %}
 							<!-- </form> -->
 							<p><strong>Categories: </strong>{{ product.category }}</p>
 						</div>
@@ -75,7 +77,8 @@
 						</div>
 						<h3>{{ r.title }}</h3>
 						<p class="product-price"><span>Per Kg</span> {{ r.price }}$ </p>
-						<button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+						<a href="{{ r.get_absolute_url }}" class="btn bg-warning text-white">view detail <i class="fas fa-show"></i></a>
+						<!-- <button class="cart-btn btn bg-warning text-white" type="button" value="{{ product.id }}" id="add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button> -->
 					</div>
 				</div>
 				{% endfor %}

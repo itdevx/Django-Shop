@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'Product',
     'Account',
     'Cart',
-    'azbankgateways'
 ]
 
 MIDDLEWARE = [
