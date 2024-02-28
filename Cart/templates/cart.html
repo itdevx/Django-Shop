@@ -40,7 +40,7 @@
 								{% for cp in cart_items %}
 								<tr class="table-body-row">
 									{% csrf_token %}
-									<input type="hidden" class="prod_id" value="{{ cp.product.id }}">
+									<input type="hidden" id="prod_id" value="{{ cp.product.id }}">
 									<td class="product-remove"><button class="btn" id="remove-product"><i class="btn far fa-window-close"></i></button></td>
 									<td class="product-image"><img src="{{ cp.product.picture.url }}" alt=""></td>
 									<td class="product-name">{{ cp.product.title }}</td>
@@ -98,16 +98,34 @@
 		
 		$(document).on('click', '#remove-product', function(e) {
 			e.preventDefault()
+			let product_id = $('#prod_id').val();
 			$.ajax({
 				type: 'POST',
 				url: '{% url "cart:remove_product" %}',
 				data: {
-					product_id: $('.prod_id').val(),
+					product_id: product_id,
 					csrfmiddlewaretoken: '{{ csrf_token }}',
 					action: 'post'
 				},
 				success: function(json){
 					console.log(json)
+					document.getElementById('cart_quantity').textContent = json.qty
+					Toastify({
+						text: json.status,
+						duration: 3000,
+						destination: "https://github.com/apvarun/toastify-js",
+						newWindow: true,
+						close: true,
+						gravity: "top", // `top` or `bottom`
+						position: "left", // `left`, `center` or `right`
+						stopOnFocus: true, // Prevents dismissing of toast on hover
+						style: {
+							background: "linear-gradient(to right, green, yellow)",
+							color:'white'
+						},
+						onClick: function(){} // Callback after click
+					}).showToast();
+					
 				}
 			})
 		})

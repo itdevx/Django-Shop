@@ -48,31 +48,31 @@ def cart_add(request):
 def add_to_cart(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            if request.user.is_authenticated:
-                p_id = int(request.POST.get('product_id'))
-                product_check = Product.objects.get(id=p_id)
-                if product_check:
-                    if C.objects.filter(user=request.user, product_id=p_id):
-                        return JsonResponse({'status': 'Product is Already in Cart'})
-                    else:
-                        product_qyt = 1
-                        C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
-                        return JsonResponse({'status': 'Product added successfuly', 'qty': C.objects.filter(user=request.user).count()})
+            p_id = request.POST.get('product_id')
+            product_check = Product.objects.get(id=p_id)
+            if product_check:
+                if C.objects.filter(user=request.user, product_id=p_id):
+                    return JsonResponse({'status': 'Product is Already in Cart'})
                 else:
-                    return JsonResponse({'status': 'No such Product found'})
-
+                    product_qyt = 1
+                    C.objects.create(user=request.user, product_id=p_id, quantity=product_qyt)
+                    return JsonResponse({'status': 'Product added successfuly', 'qty': C.objects.filter(user=request.user).count()})
             else:
-                return JsonResponse({'status': 'Login to continue'})
+                return JsonResponse({'status': 'No such Product found'})
+
+    else:
+        return JsonResponse({'status': 'Login to continue'})
 
 
 def remove_product(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
             p_id = request.POST.get('product_id')
-            product = Product.objects.get(pk=p_id)
-            cart = C.objects.filter(user=request.user)
-            print(p_id)
-            return JsonResponse({'status': 'Product Deleted from your Cart!'})                
+            product = get_object_or_404(Product, id=p_id)
+            cart = get_object_or_404(C, product=product, user=request.user)
+            cart.delete()
+
+            return JsonResponse({'status': 'Product Deleted from your Cart!', 'qty': C.objects.filter(user=request.user).count()})                
 
 
 class CheckoutView(View):
