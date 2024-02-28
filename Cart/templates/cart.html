@@ -41,7 +41,7 @@
 								<tr class="table-body-row" id="{{ cp.product.id }}">
 									{% csrf_token %}
 									<input type="hidden" id="prod_id" value="{{ cp.product.id }}">
-									<td class="product-remove"><button class="btn" id="remove-product" data-id="{{ cp.product.id }}"><i class="btn far fa-window-close"></i></button></td>
+									<td class="product-remove"><button class="btn remove-product" id="{{ cp.product.id }}"><i class="btn far fa-window-close"></i></button></td>
 									<td class="product-image"><img src="{{ cp.product.picture.url }}" alt=""></td>
 									<td class="product-name">{{ cp.product.title }}</td>
 									<td class="product-price">${{ cp.product.price }}</td>
@@ -96,10 +96,11 @@
 
 	<script>
 		
-		$(document).on('click', '#remove-product', function(e) {
+		$(document).on('click', '.remove-product', function(e) {
 			e.preventDefault()
 			let product_id = $('#prod_id').val();
 			let table_id = $('.table-body-row');
+			console.log($(this).data('id'))
 
 			$.ajax({
 				type: 'POST',
@@ -107,7 +108,7 @@
 				data: {
 					product_id: product_id,
 					csrfmiddlewaretoken: '{{ csrf_token }}',
-					action: 'post'
+					action: 'post',
 				},
 				success: function(json){
 					document.getElementById('cart_quantity').textContent = json.qty
