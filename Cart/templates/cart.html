@@ -38,10 +38,10 @@
 							</thead>
 							<tbody>
 								{% for cp in cart_items %}
-								<tr class="table-body-row">
+								<tr class="table-body-row" id="{{ cp.product.id }}">
 									{% csrf_token %}
 									<input type="hidden" id="prod_id" value="{{ cp.product.id }}">
-									<td class="product-remove"><button class="btn" id="remove-product"><i class="btn far fa-window-close"></i></button></td>
+									<td class="product-remove"><button class="btn" id="remove-product" data-id="{{ cp.product.id }}"><i class="btn far fa-window-close"></i></button></td>
 									<td class="product-image"><img src="{{ cp.product.picture.url }}" alt=""></td>
 									<td class="product-name">{{ cp.product.title }}</td>
 									<td class="product-price">${{ cp.product.price }}</td>
@@ -99,6 +99,8 @@
 		$(document).on('click', '#remove-product', function(e) {
 			e.preventDefault()
 			let product_id = $('#prod_id').val();
+			let table_id = $('.table-body-row');
+
 			$.ajax({
 				type: 'POST',
 				url: '{% url "cart:remove_product" %}',
@@ -108,24 +110,27 @@
 					action: 'post'
 				},
 				success: function(json){
-					console.log(json)
 					document.getElementById('cart_quantity').textContent = json.qty
+					table_id.remove();
 					Toastify({
 						text: json.status,
 						duration: 3000,
 						destination: "https://github.com/apvarun/toastify-js",
 						newWindow: true,
 						close: true,
-						gravity: "top", // `top` or `bottom`
-						position: "left", // `left`, `center` or `right`
-						stopOnFocus: true, // Prevents dismissing of toast on hover
+						gravity: "top",
+						position: "left",
+						stopOnFocus: true,
 						style: {
 							background: "linear-gradient(to right, green, yellow)",
 							color:'white'
 						},
-						onClick: function(){} // Callback after click
+						onClick: function(){
+						}
 					}).showToast();
-					
+					// setInterval(function() {
+					// window.location.reload();
+					// }, 1000);
 				}
 			})
 		})
