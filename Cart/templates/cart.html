@@ -23,6 +23,7 @@
 	<div class="cart-section mt-150 mb-150">
 		<div class="container">
 			<div class="row">
+				{% if cart_items %}
 				<div class="col-lg-8 col-md-12">
 					<div class="cart-table-wrap">
 						<table class="cart-table">
@@ -88,6 +89,11 @@
 						</div>
 					</div>
 				</div>
+				{% else %}
+				<div class="col-lg-12 col-md-12">
+					<h5 class="alert alert-warning text-center">No such product in your cart</h5>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
