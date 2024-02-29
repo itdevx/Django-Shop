@@ -68,7 +68,7 @@
 							<tbody>
 								<tr class="total-data">
 									<td><strong>Total: </strong></td>
-									<td>${{ total_price }}</td>
+									<td id="total_price" >${{ total_price }}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -95,13 +95,12 @@
 
 
 	<script>
-		
 		$(document).on('click', '.remove-product', function(e) {
 			e.preventDefault()
 			let product_id = $('#prod_id').val();
 			let table_id = $('.table-body-row');
 			console.log($(this).data('id'))
-
+			
 			$.ajax({
 				type: 'POST',
 				url: '{% url "cart:remove_product" %}',
@@ -112,6 +111,7 @@
 				},
 				success: function(json){
 					document.getElementById('cart_quantity').textContent = json.qty
+					document.getElementById('total_price').textContent = '{{ total_price }}'
 					table_id.remove();
 					Toastify({
 						text: json.status,
@@ -129,9 +129,9 @@
 						onClick: function(){
 						}
 					}).showToast();
-					// setInterval(function() {
-					// window.location.reload();
-					// }, 1000);
+					setInterval(function() {
+					window.location.reload();
+					}, 1000);
 				}
 			})
 		})

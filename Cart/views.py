@@ -66,13 +66,18 @@ def add_to_cart(request):
 
 def remove_product(request):
     if request.user.is_authenticated:
+        cart_items = C.objects.filter(user=request.user).all()
+        total_price = 0
+        if cart_items:
+            for item in cart_items:
+                total_price += item.product.price
         if request.method == 'POST':
             p_id = request.POST.get('product_id')
             product = get_object_or_404(Product, id=p_id)
             cart = get_object_or_404(C, product=product, user=request.user)
             cart.delete()
 
-            return JsonResponse({'status': 'Product Deleted from your Cart!', 'qty': C.objects.filter(user=request.user).count()})                
+            return JsonResponse({'status': 'Product Deleted from your Cart!', 'qty': C.objects.filter(user=request.user).count(), 'total_price':total_price})                
 
 
 class CheckoutView(View):
