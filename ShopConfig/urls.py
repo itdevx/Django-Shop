@@ -19,11 +19,16 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Product.urls')),
     path('', include('Cart.urls')),
     path('', include('Account.urls')),
+    
+    # api
+    path('api/', include('Api.urls')),
+    path('rest-auth/', include('rest_framework.urls'))
     
 ]
 
