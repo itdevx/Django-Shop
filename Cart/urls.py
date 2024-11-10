@@ -18,5 +18,5 @@ urlpatterns = [
     ),
     path(
         'remove-product', remove_product, name='remove_product'
-    )
+    ),
 ]
