@@ -9,11 +9,13 @@ app_name = 'api'
 
 router = DefaultRouter()
 
-urlpatterns = [
-    path('product-list', views.ProductListApi.as_view(), name='product-list-api')
-]
+# urlpatterns = [
+#     path('product-list', views.ProductListApi.as_view(), name='product-list-api'),
+
+# ]
 
 
 router.register('products', views.ProductViewSet, basename='productsviewset')
+router.register('create-category', views.CategoryViewSet, basename='create category')
 
 urlpatterns = router.urls

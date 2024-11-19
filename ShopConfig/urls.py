@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='Shop Api')
 
 
 urlpatterns = [
@@ -28,7 +31,10 @@ urlpatterns = [
     
     # api
     path('api/', include('Api.urls')),
-    path('rest-auth/', include('rest_framework.urls'))
+    path('rest-auth/', include('rest_framework.urls')),
+
+    #docs
+    path('api/swagger/', schema_view)
     
 ]
 

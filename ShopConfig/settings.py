@@ -44,7 +44,13 @@ INSTALLED_APPS = [
     'Api',
 
     'rest_framework',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+
+    #docs
+    'rest_framework_swagger',
+
+    # filter seaech
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -145,3 +151,10 @@ MEDIA_ROOT = os.path.join(
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+
+}
