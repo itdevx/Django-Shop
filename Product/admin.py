@@ -29,4 +29,5 @@ class CustomerAdmin(admin.ModelAdmin):
     list_editable = ['phone', 'email']
 
 admin.site.register(Order)
+admin.site.register(OrderItem)
 admin.site.register(Payment)
